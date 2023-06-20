@@ -58,7 +58,7 @@ class Pets:
         link = res.json()['link']
         return status, link
 
-    def get_pet(self) -> json:
+    def post_pet(self) -> json:
         """Запрос к Swagger сайта для получения id своего питомца зарегистрированным пользователем"""
         my_token = Pets().get_token()[0]
         my_id = Pets().get_token()[2]
@@ -73,7 +73,7 @@ class Pets:
     def put_pet_like(self) -> json:
         """Запрос к Swagger сайта для проставления лайка своему питомцу зарегистрированным пользователем"""
         my_token = Pets().get_token()[0]
-        pet_id = Pets().get_pet()[1]
+        pet_id = Pets().post_pet()[1]
         headers = {'Authorization': f'Bearer {my_token}'}
         data = {"id": pet_id}
         res = requests.put(self.base_url + f'pet/{pet_id}/like', data=json.dumps(data), headers=headers)
@@ -83,7 +83,7 @@ class Pets:
     def delete_pet(self) -> json:
         """Запрос к Swagger сайта для удаления своего питомца зарегистрированным пользователем"""
         my_token = Pets().get_token()[0]
-        pet_id = Pets().get_pet()[1]
+        pet_id = Pets().post_pet()[1]
         headers = {'Authorization': f'Bearer {my_token}'}
         data = {'id': pet_id}
 
@@ -95,7 +95,7 @@ class Pets:
         """Запрос к Swagger сайта для изменения имени в карточке своего питомца зарегистрированным пользователем"""
         my_token = Pets().get_token()[0]
         my_id = Pets().get_token()[2]
-        pet_id = Pets().get_pet()[1]
+        pet_id = Pets().post_pet()[1]
         headers = {'Authorization': f'Bearer {my_token}'}
         data = {"id": pet_id, "type": "dog", "name": 'Alex', "owner_id": my_id}
         res = requests.patch(self.base_url + 'pet', data=json.dumps(data), headers=headers)
@@ -117,7 +117,7 @@ class Pets:
     def put_pet_like_neg(self) -> json:
         """Запрос к Swagger сайта для проставления лайка своему питомцу невалидным запросом PATCH зарегистрированным пользователем"""
         my_token = Pets().get_token()[0]
-        pet_id = Pets().get_pet()[1]
+        pet_id = Pets().post_pet()[1]
         headers = {'Authorization': f'Bearer {my_token}'}
         data = {"id": pet_id}
         res = requests.patch(self.base_url + f'pet/{pet_id}/like', data=json.dumps(data), headers=headers)
@@ -127,7 +127,7 @@ class Pets:
     def put_pet_like_not_auth(self) -> json:
         """Запрос к Swagger сайта для проставления лайка питомцу незарегистрированным пользователем"""
         my_token = Pets().get_token()[0]
-        pet_id = Pets().get_pet()[1]
+        pet_id = Pets().post_pet()[1]
         headers = {'Authorization': 'Bearer'}
         data = {"id": pet_id}
         res = requests.put(self.base_url + f'pet/{pet_id}/like', data=json.dumps(data), headers=headers)
@@ -150,7 +150,7 @@ Pets().get_token()
 Pets().get_list_users()
 Pets().create_pet()
 Pets().upload_pet_photo()
-Pets().get_pet()
+Pets().post_pet()
 Pets().put_pet_like()
 Pets().update_pet()
 Pets().delete_pet()
